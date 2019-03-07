@@ -1,4 +1,4 @@
-package liphvf.helloworld
+package liphvf.quantovalemeudinheiro
 
 import org.junit.Test
 

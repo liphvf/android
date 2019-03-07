@@ -25,7 +25,7 @@
         />
     </LinearLayout>
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Horas Trabalhadas"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Horas Trabalhadas no mês"/>
         <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:hint="0.0" android:id="@+id/txt_horas_trabalhadas" android:inputType="numberDecimal" />
     </LinearLayout>

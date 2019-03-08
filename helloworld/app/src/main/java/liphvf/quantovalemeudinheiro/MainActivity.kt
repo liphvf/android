@@ -11,8 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         btn_calcular.setOnClickListener {
 
             var valorSalario = 0.0;
@@ -37,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             valorProduto = txt_valor_produto.text.toString().toDouble()
 
             var resultado = valorProduto / (valorSalario/ horasTrabalhaadas)
-            txt_resultado.text = "Você gastará $resultado horas de trabalho para obter esse produto.";
+            txt_resultado.text = "Você gastará $resultado hora(s) para obter este produto.";
         }
     }
 }

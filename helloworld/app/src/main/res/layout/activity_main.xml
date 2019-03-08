@@ -9,32 +9,24 @@
         tools:context=".MainActivity"
         android:orientation="vertical"
         android:padding="16dp">
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quanto vale seu tempo!"
-            android:gravity="center_horizontal"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"/>
 
-    <!--<TextView-->
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Salário"/>
-        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:hint="0.0" android:id="@+id/txt_valor_salario" android:inputType="numberDecimal"
-        />
-    </LinearLayout>
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Horas Trabalhadas no mês"/>
-        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:hint="0.0" android:id="@+id/txt_horas_trabalhadas" android:inputType="numberDecimal" />
-    </LinearLayout>
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <!--<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">-->
+        <!--</LinearLayout>-->
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Salário:"/>
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:hint="0.0" android:id="@+id/txt_valor_salario" android:inputType="numberDecimal"/>
+
+    <!--<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">-->
+    <!--</LinearLayout>-->
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Horas Trabalhadas no mês:"/>
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:hint="0.0" android:id="@+id/txt_horas_trabalhadas" android:inputType="numberDecimal" />
+    <!--<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">-->
+<!--</LinearLayout>-->
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="Valor do Produto"/>
-    <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:text="Valor do Produto:"/>
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
               android:hint="0.0" android:id="@+id/txt_valor_produto" android:inputType="numberDecimal"/>
-</LinearLayout>
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Calcular" android:id="@+id/btn_calcular" android:drawableBottom="@color/colorPrimary"/>
 
@@ -44,12 +36,5 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:text="" android:textSize="40dp" android:id="@+id/txt_resultado"/>
     </FrameLayout>
-    <!--<TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="Resultado:"/>-->
-    <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Hello World!"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintRight_toRightOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"/>-->
+
 </LinearLayout>

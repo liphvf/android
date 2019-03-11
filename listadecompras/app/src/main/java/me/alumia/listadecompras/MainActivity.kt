@@ -1,8 +1,8 @@
 package me.alumia.listadecompras
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -23,15 +23,12 @@ class MainActivity : AppCompatActivity() {
 
         list_view_produtos.adapter = produtosAdapter
 
-        btn_inserir.setOnClickListener{
-            val produto = txt_produto.text.toString()
-            if(produto.isEmpty()) {
-                txt_produto.error = "Preencha um valor"
-                return@setOnClickListener
-            }
+        btn_adicionar.setOnClickListener{
+            //Criando a Intent explícita
+            val intentCadastro = Intent(this, CadastroActivity::class.java)
 
-            produtosAdapter.add(produto)
-            txt_produto.text.clear()
+            //iniciando a atividade
+            startActivity(intentCadastro)
         }
 
         list_view_produtos.setOnItemLongClickListener{ adapterView: AdapterView<*>, view: View, position: Int, id: Long ->

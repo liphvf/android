@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,12 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val produtosAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1)
-
-        val item = "Feijão"
-
-        produtosAdapter.add(item)
-
+        val produtosAdapter = ProdutoAdapter(this)
         list_view_produtos.adapter = produtosAdapter
 
         btn_adicionar.setOnClickListener{
@@ -37,5 +31,14 @@ class MainActivity : AppCompatActivity() {
             produtosAdapter.remove(produtosAdapter.getItem(position))
             true // Esse true informa que o click foi realizado.
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val adapter = list_view_produtos.adapter as ProdutoAdapter
+
+        adapter.clear()
+        adapter.addAll(produtosGlobal)
     }
 }

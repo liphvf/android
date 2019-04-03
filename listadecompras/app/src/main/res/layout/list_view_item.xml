@@ -31,12 +31,12 @@
                     android:layout_weight="1"
                     android:text="Qtd"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/qtd_item"/>
+                    android:layout_height="wrap_content" android:id="@+id/txt_item_qtd"/>
             <TextView
                     android:layout_weight="1"
                     android:text="Valor"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/valor_item"/>
+                    android:layout_height="wrap_content" android:id="@+id/txt_item_valor"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

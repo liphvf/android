@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,8 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         list_view_produtos.setOnItemLongClickListener{ adapterView: AdapterView<*>, view: View, position: Int, id: Long ->
 
+            var itemParaRemover = produtosAdapter.getItem(position)
 
-            produtosAdapter.remove(produtosAdapter.getItem(position))
+            produtosGlobal.remove(itemParaRemover)
+            produtosAdapter.remove(itemParaRemover)
+            AtualizaValorTotal()
+
             true // Esse true informa que o click foi realizado.
         }
     }
@@ -40,5 +45,15 @@ class MainActivity : AppCompatActivity() {
 
         adapter.clear()
         adapter.addAll(produtosGlobal)
+
+        AtualizaValorTotal()
+    }
+
+    fun AtualizaValorTotal() {
+        val soma = produtosGlobal.sumByDouble { it.valor * it.quantidade }
+
+        val formatadorNumerico = NumberFormat.getCurrencyInstance()
+
+        txt_total.text = "TOTAL: ${formatadorNumerico.format(soma)}"
     }
 }

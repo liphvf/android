@@ -39,7 +39,7 @@ class CadastroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val prod = Produto(produto, qtd.toInt(), valor.toDouble())
+            val prod = Produto(produto, qtd.toInt(), valor.toDouble(), imageBitMap)
             produtosGlobal.add(prod)
 
 //          Limpeza de caixas

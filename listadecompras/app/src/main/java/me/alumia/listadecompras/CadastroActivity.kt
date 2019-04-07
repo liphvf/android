@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_cadastro.*
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -17,7 +20,7 @@ class CadastroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-        img_foto_produto.setOnClickListener{
+        img_foto_produto.setOnClickListener {
             abrirGaleria()
         }
 
@@ -39,14 +42,27 @@ class CadastroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val prod = Produto(produto, qtd.toInt(), valor.toDouble(), imageBitMap)
-            produtosGlobal.add(prod)
+            database.use {
 
-//          Limpeza de caixas
-            txt_produto.text.clear()
-            txt_qtd.text.clear()
-            txt_valor.text.clear()
+                val idProduto = insert(
+                    "Produtos",
+                    "nome" to produto,
+                    "quantidade" to qtd,
+                    "valor" to valor.toDouble(),
+                    "foto" to imageBitMap
+                )
 
+                if (idProduto != -1L) {
+                    toast("Item Inserido com sucesso")
+
+//                  Limpeza de caixas
+                    txt_produto.text.clear()
+                    txt_qtd.text.clear()
+                    txt_valor.text.clear()
+                } else {
+                    toast("Erro ao inserir no banco de dados")
+                }
+            }
         }
     }
 

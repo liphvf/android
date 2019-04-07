@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
+val Context.database: ListaComprasDatabase get() = ListaComprasDatabase.getInstance(getApplicationContext())
+
 class ListaComprasDatabase(context: Context) :
     ManagedSQLiteOpenHelper(ctx = context, name = "listaCompras.db", version = 1) {
 

@@ -49,7 +49,7 @@ class CadastroActivity : AppCompatActivity() {
                     "nome" to produto,
                     "quantidade" to qtd,
                     "valor" to valor.toDouble(),
-                    "foto" to imageBitMap
+                    "foto" to imageBitMap?.toByteArray()
                 )
 
                 if (idProduto != -1L) {

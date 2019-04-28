@@ -22,16 +22,15 @@ class ProdutoAdapter(contexto: Context) : ArrayAdapter<Produto>(contexto, 0) {
             view = LayoutInflater.from(context).inflate(R.layout.list_view_item, parent, false)
         }
 
-        val item = getItem(position)
-
         val txt_produto = view.findViewById<TextView>(R.id.txt_item_produto)
         val txt_qtd = view.findViewById<TextView>(R.id.txt_item_qtd)
         val txt_valor = view.findViewById<TextView>(R.id.txt_item_valor)
         val img_produto = view.findViewById<ImageView>(R.id.img_item_foto)
 
-
 //        NumberFormat.getCurrencyInstance(Locale("pt", "br")) Caso queira passar uma moeda
         val formatadorMoeada = NumberFormat.getCurrencyInstance()
+
+        val item = getItem(position)
 
         txt_qtd.text = item.quantidade.toString()
         txt_produto.text = item.nome
@@ -43,4 +42,13 @@ class ProdutoAdapter(contexto: Context) : ArrayAdapter<Produto>(contexto, 0) {
 
         return view
     }
+
+    // TODO: Replicar ViewHolder
+    private class ViewHolder {
+        var imgItemFoto: ImageView? = null
+        var txtItemProduto: TextView? = null
+        var txtQuantidade: TextView? = null
+        var txtValor: TextView? = null
+    }
+
 }

@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             //Criando a Intent explícita
             val intentCadastro = Intent(this, CadastroActivity::class.java)
 
-            //iniciando a atividade
+            //iniciando a atividade.
             startActivity(intentCadastro)
         }
 
@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    // TODO: replicar logica da lista de produtos
     override fun onResume() {
         super.onResume()
 

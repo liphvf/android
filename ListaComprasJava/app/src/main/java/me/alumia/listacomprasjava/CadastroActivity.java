@@ -26,8 +26,6 @@ public class CadastroActivity extends AppCompatActivity {
     private TextView quantidade;
     private TextView valor;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +65,9 @@ public class CadastroActivity extends AppCompatActivity {
                     valor.setError("Preencha o valor");
                     return;
                 }
+
+                CriaBanco db = new CriaBanco(CadastroActivity.this);
+                db.insereDado(produtoNomeText, Integer.parseInt(quantidadeText) , Double.parseDouble(valorText), null );
 
             }
         });

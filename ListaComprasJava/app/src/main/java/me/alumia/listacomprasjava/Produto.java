@@ -16,6 +16,10 @@ public class Produto {
       this(id, nome, quantidade, valor, null);
     }
 
+    public Produto() {
+    }
+
+
     private int id;
     private String nome;
     private int quantidade;

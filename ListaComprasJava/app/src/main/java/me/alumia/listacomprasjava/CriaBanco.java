@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -127,9 +128,14 @@ public class CriaBanco extends SQLiteOpenHelper {
 
     public void deletaRegistro(int id){
 
-        String where = CriaBanco.ID + "=" + id;
+        Log.i("CriaBanco ID",id + "");
+
+        String where = CriaBanco.ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
-        db.delete(CriaBanco.TABELA,where,null);
+        int x = db.delete(CriaBanco.TABELA,where,null);
+
+        Log.i("CriaBanco",x + "");
+
         db.close();
     }
 }

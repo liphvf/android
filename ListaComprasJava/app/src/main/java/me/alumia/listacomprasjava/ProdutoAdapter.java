@@ -55,7 +55,7 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
             Log.i("ProdutoAdapter2", R.id.txt_item_qtd + "");
             viewHolder.imgItemFoto.setImageBitmap(produtos.get(position).getFoto());
             viewHolder.txtItemProduto.setText(produtos.get(position).getNome());
-            viewHolder.txtQuantidade.setText(produtos.get(position).getQuantidade());
+            viewHolder.txtQuantidade.setText(produtos.get(position).getQuantidade() + "");
             viewHolder.txtValor.setText(String.valueOf(produtos.get(position).getValor()));
         }
         return _convertView;

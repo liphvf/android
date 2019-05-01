@@ -68,8 +68,9 @@ public class CadastroActivity extends AppCompatActivity {
                 }
 
                 CriaBanco db = new CriaBanco(CadastroActivity.this);
-                db.insereDado(produtoNomeText, Integer.parseInt(quantidadeText) , Double.parseDouble(valorText), null );
-                Log.i("CadastroActivity", "passou aqui");
+                db.insereDado(produtoNomeText, Integer.parseInt(quantidadeText) , Double.parseDouble(valorText), imageBitMap );
+
+                CadastroActivity.this.finish();
 
             }
         });

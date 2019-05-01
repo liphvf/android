@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Produto produtoParaRemover = produtos.get(position);
 
-                _db.deletaRegistro(position);
+                _db.deletaRegistro(produtoParaRemover.getId());
                 produtos.remove(position);
                 produtoAdapter.notifyDataSetChanged();
 

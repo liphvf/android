@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Produto> produtos;
     private ArrayAdapter<Produto> produtoAdapter;
-
     private TextView valorTotal;
+    private CriaBanco _db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         produtoAdapter = new ProdutoAdapter(this, produtos);
         listView.setAdapter(produtoAdapter);
 
-        CriaBanco db = new CriaBanco(this);
-        produtos = db.getProdutos();
+        _db = new CriaBanco(this);
+        produtos = _db.getProdutos();
 
 
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Produto produtoParaRemover = produtos.get(position);
+
+                _db.deletaRegistro(position);
                 produtos.remove(position);
                 produtoAdapter.notifyDataSetChanged();
 

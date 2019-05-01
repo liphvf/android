@@ -118,4 +118,11 @@ public class CriaBanco extends SQLiteOpenHelper {
 
         return produtos;
     }
+
+    public void deletaRegistro(int id){
+        String where = CriaBanco.ID + "=" + id;
+        _db = this.getReadableDatabase();
+        _db.delete(CriaBanco.TABELA,where,null);
+        _db.close();
+    }
 }

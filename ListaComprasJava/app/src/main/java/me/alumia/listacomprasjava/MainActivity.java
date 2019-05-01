@@ -1,15 +1,14 @@
 package me.alumia.listacomprasjava;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Button botaoAdicionar;
     private ListView listView;
     private ArrayList<Produto> produtos;
-    private ArrayAdapter<Produto> produtoAdapter;
+    private ProdutoAdapter produtoAdapter;
     private TextView valorTotal;
     private CriaBanco _db;
 
@@ -39,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(produtoAdapter);
 
         _db = new CriaBanco(this);
-        produtos = _db.getProdutos();
-
+        produtos.addAll(_db.getProdutos());
+        produtoAdapter.notifyDataSetChanged();
 
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        AtualizaValorTotal();
+        AtualizarListaDeProdutos();
     }
 
     // TODO: converter para logica de variaveis na classe
@@ -88,10 +87,27 @@ public class MainActivity extends AppCompatActivity {
             soma += produto.getValor();
         }
 
-
         NumberFormat formatadorNumerico = NumberFormat.getCurrencyInstance();
 
-
         valorTotal.setText("TOTAL: " + formatadorNumerico.format(soma));
+    }
+
+    public void AtualizarListaDeProdutos() {
+
+        produtos.clear();
+        Log.i("Main1", produtos.size() + "");
+        produtos.addAll(_db.getProdutos());
+
+        Log.i("Main2", produtos.size() + "");
+
+        produtoAdapter.notifyDataSetChanged();
+        Log.i("Main4",  produtoAdapter.produtos.size() + "");
+
+
+
+
+
+        AtualizaValorTotal();
+
     }
 }

@@ -20,9 +20,9 @@ public class CriaBanco extends SQLiteOpenHelper {
     private static final String NOME = "nome";
     private static final String QUANTIDADE = "quantidade";
     private static final String VALOR = "valor";
-    private static final String FOTO = null;
+    private static final String FOTO = "foto";
     private static final int VERSAO = 1;
-    private static SQLiteDatabase _db;
+
 
     public CriaBanco(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
@@ -31,14 +31,15 @@ public class CriaBanco extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        _db = this.getWritableDatabase();
+        String sql = " CREATE TABLE " + TABELA + " ( "
+                + ID + " integer primary key autoincrement, "
+                + NOME + " text, "
+                + QUANTIDADE + " INTEGER, "
+                + VALOR + " REAL, "
+                + FOTO + " BLOB "
+                +" ) ";
 
-        String sql = "CREATE TABLE" + TABELA + "("
-                + ID + "integer primary key autoincrement"
-                + NOME + "text"
-                + QUANTIDADE + "INTEGER"
-                + VALOR + "REAL"
-                + FOTO + "BLOB";
+        db.execSQL(sql);
 
     }
 
@@ -65,10 +66,11 @@ public class CriaBanco extends SQLiteOpenHelper {
             valores.put(CriaBanco.FOTO, streamFoto.toByteArray());
         }
 
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        resultado = _db.insert(CriaBanco.TABELA, null, valores);
+        resultado = db.insert(CriaBanco.TABELA, null, valores);
 
-        _db.close();
+        db.close();
 
         if (resultado ==-1)
             return "Erro ao inserir registro";
@@ -78,34 +80,38 @@ public class CriaBanco extends SQLiteOpenHelper {
     }
 
     public Cursor carregaDados(){
+
         Cursor cursor;
         String[] campos =  {this.ID,this.NOME};
-        _db = this.getReadableDatabase();
-        cursor = _db.query(this.TABELA, campos, null, null, null, null, null, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        cursor = db.query(this.TABELA, campos, null, null, null, null, null, null);
 
         if(cursor!=null){
             cursor.moveToFirst();
         }
-        _db.close();
+        db.close();
         return cursor;
     }
 
     public ArrayList<Produto> getProdutos() {
         ArrayList<Produto> produtos = new ArrayList<>();
 
-        Cursor mCursor = _db.query(this.TABELA, null, null, null, null, null, null, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = db.query(this.TABELA, null, null, null, null, null, null, null);
 
         if (mCursor.moveToFirst()) {
             do{
                 Produto produto = new Produto();
-                produto.setId(mCursor.getInt(mCursor.getColumnIndexOrThrow("id")));
+                produto.setId(mCursor.getInt(mCursor.getColumnIndexOrThrow("_id")));
                 produto.setNome(mCursor.getString(mCursor.getColumnIndexOrThrow("nome")));
                 produto.setQuantidade(mCursor.getInt(mCursor.getColumnIndexOrThrow("quantidade")));
                 produto.setValor(mCursor.getDouble(mCursor.getColumnIndexOrThrow("valor")));
 
                 byte[] fotoBanco = mCursor.getBlob(mCursor.getColumnIndexOrThrow("foto"));
 
-                produto.setFoto(BitmapFactory.decodeByteArray(fotoBanco,0, fotoBanco.length));
+                if (fotoBanco != null && fotoBanco.length > 0){
+                    produto.setFoto(BitmapFactory.decodeByteArray(fotoBanco,0, fotoBanco.length));
+                }
 
                 produtos.add(produto);
 
@@ -120,9 +126,10 @@ public class CriaBanco extends SQLiteOpenHelper {
     }
 
     public void deletaRegistro(int id){
+
         String where = CriaBanco.ID + "=" + id;
-        _db = this.getReadableDatabase();
-        _db.delete(CriaBanco.TABELA,where,null);
-        _db.close();
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(CriaBanco.TABELA,where,null);
+        db.close();
     }
 }

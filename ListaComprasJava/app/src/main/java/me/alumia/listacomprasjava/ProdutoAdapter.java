@@ -2,6 +2,7 @@ package me.alumia.listacomprasjava;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class ProdutoAdapter extends ArrayAdapter<Produto> {
 
     private Context context;
-    private ArrayList<Produto> produtos;
+    public ArrayList<Produto> produtos;
 
     public ProdutoAdapter(Context context, ArrayList<Produto> produtos) {
         super(context, 0 , produtos);
@@ -50,6 +51,8 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
                viewHolder = (ViewHolder) _convertView.getTag();
 
            }
+
+            Log.i("ProdutoAdapter2", R.id.txt_item_qtd + "");
             viewHolder.imgItemFoto.setImageBitmap(produtos.get(position).getFoto());
             viewHolder.txtItemProduto.setText(produtos.get(position).getNome());
             viewHolder.txtQuantidade.setText(produtos.get(position).getQuantidade());

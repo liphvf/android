@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         double soma = 0.0;
 
         for (Produto produto : produtos) {
-            soma += produto.getValor();
+            soma += produto.getValor() * produto.getQuantidade();
         }
 
         NumberFormat formatadorNumerico = NumberFormat.getCurrencyInstance();

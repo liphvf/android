@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ProdutoAdapter extends ArrayAdapter<Produto> {
@@ -52,11 +53,13 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
 
            }
 
+            NumberFormat formatadorNumerico = NumberFormat.getCurrencyInstance();
+
             Log.i("ProdutoAdapter2", R.id.txt_item_qtd + "");
             viewHolder.imgItemFoto.setImageBitmap(produtos.get(position).getFoto());
             viewHolder.txtItemProduto.setText(produtos.get(position).getNome());
-            viewHolder.txtQuantidade.setText(produtos.get(position).getQuantidade() + "");
-            viewHolder.txtValor.setText(String.valueOf(produtos.get(position).getValor()));
+            viewHolder.txtQuantidade.setText("x "+produtos.get(position).getQuantidade());
+            viewHolder.txtValor.setText( formatadorNumerico.format( produtos.get(position).getValor()));
         }
         return _convertView;
     }

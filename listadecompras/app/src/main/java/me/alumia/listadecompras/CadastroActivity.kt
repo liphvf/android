@@ -6,15 +6,24 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_cadastro.*
-import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 
 class CadastroActivity : AppCompatActivity() {
 
     val COD_IMAGE = 101
     var imageBitMap: Bitmap? = null
+
+    private var fotoProduto: ImageView? = null
+    private var botaoInserir: Button? = null
+
+    private var produtoNome: TextView? = null
+    private var quantidade: TextView? = null
+    private var valor: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,54 +35,42 @@ class CadastroActivity : AppCompatActivity() {
 
         btn_inserir.setOnClickListener {
 
-            //pegando os valores digitados pelo usuário
-            val produto = txt_produto.text.toString()
-            val qtd = txt_qtd.text.toString()
-            val valor = txt_valor.text.toString()
+            this.produtoNome = findViewById(R.id.txt_produto)
+            this.quantidade = findViewById(R.id.txt_qtd)
+            this.valor = findViewById(R.id.txt_valor)
 
-            if (produto.isEmpty()) {
-                txt_produto.error = "Preencha o nome do produto"
+            var produtoNomeText = produtoNome?.text.toString()
+            val quantidadeText = quantidade?.text.toString()
+            val valorText = valor?.text.toString()
+
+
+            if (produtoNomeText.isEmpty()) {
+                this.produtoNome?.error ="Preencha o nome do produto"
                 return@setOnClickListener
-            } else if (qtd.isEmpty()) {
-                txt_qtd.error = "Preencha a quantidade"
+
+            } else if (quantidadeText.isEmpty()) {
+                quantidade?.error = "Preencha a quantidade"
                 return@setOnClickListener
-            } else if (qtd.isEmpty()) {
-                txt_valor.error = "Preencha o valor"
+
+            } else if (valorText.isEmpty()) {
+                valor?.error = "Preencha o valor"
                 return@setOnClickListener
             }
 
-            database.use {
+            val db = BancoLocal(this@CadastroActivity)
+            db.insereDado(
+                produtoNomeText,
+                Integer.parseInt(quantidadeText),
+                java.lang.Double.parseDouble(valorText),
+                imageBitMap
+            )
 
-                val idProduto = insert(
-                    "Produtos",
-                    "nome" to produto,
-                    "quantidade" to qtd,
-                    "valor" to valor.toDouble(),
-                    "foto" to imageBitMap?.toByteArray()
-                )
-
-                if (idProduto != -1L) {
-                    toast("Item Inserido com sucesso")
-
-//                  Limpeza de caixas
-                    txt_produto.text.clear()
-                    txt_qtd.text.clear()
-                    txt_valor.text.clear()
-                } else {
-                    toast("Erro ao inserir no banco de dados")
-                }
-            }
+            this@CadastroActivity.finish()
         }
     }
 
     fun abrirGaleria() {
-        // definindo a ação de conteúdo
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-
-        // definindo filtro para imagens
-        intent.type = "image/*"
-
-        // inicializando a activity com resultado
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), COD_IMAGE)
     }
 
@@ -85,13 +82,8 @@ class CadastroActivity : AppCompatActivity() {
             // Verifica se veio dados
             if (data != null) {
 
-                // Lendo a URI da imagem
-                val inputStream = contentResolver.openInputStream(data.getData())
-
-                //transformando o resultado em bitmap
-                imageBitMap = BitmapFactory.decodeStream(inputStream)
-
-                img_foto_produto.setImageBitmap(imageBitMap)
+                imageBitMap = data.extras!!.get("data") as Bitmap
+                fotoProduto?.setImageBitmap(imageBitMap)
             }
         }
     }

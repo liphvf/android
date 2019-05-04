@@ -3,7 +3,6 @@ package me.alumia.listacomprasjava;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Produto> produtos;
     private ProdutoAdapter produtoAdapter;
     private TextView valorTotal;
-    private CriaBanco _db;
+    private BancoLocal _db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +35,20 @@ public class MainActivity extends AppCompatActivity {
         produtoAdapter = new ProdutoAdapter(this, produtos);
         listViewProdutos.setAdapter(produtoAdapter);
 
-        _db = new CriaBanco(this);
+        _db = new BancoLocal(this);
         produtos.addAll(_db.getProdutos());
         produtoAdapter.notifyDataSetChanged();
 
+        // Adiciona ação ao evento de clique.
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Criando a Intent explícita
                 Intent intentCadastro = new Intent(MainActivity.this, CadastroActivity.class);
-
-                //iniciando a atividade
                 startActivity(intentCadastro);
             }
         });
 
+        // Adiciona ação ao clicar longamente
         listViewProdutos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                 AtualizaValorTotal();
 
-                Toast.makeText(MainActivity.this, "tem deletado com sucesso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Item excluido.", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -75,20 +73,6 @@ public class MainActivity extends AppCompatActivity {
         AtualizarListaDeProdutos();
     }
 
-    // TODO: converter para logica de variaveis na classe
-    private void AtualizaValorTotal() {
-
-        double soma = 0.0;
-
-        for (Produto produto : produtos) {
-            soma += produto.getValor() * produto.getQuantidade();
-        }
-
-        NumberFormat formatadorNumerico = NumberFormat.getCurrencyInstance();
-
-        valorTotal.setText("TOTAL: " + formatadorNumerico.format(soma));
-    }
-
     public void AtualizarListaDeProdutos() {
 
         produtos.clear();
@@ -97,5 +81,17 @@ public class MainActivity extends AppCompatActivity {
         produtoAdapter.notifyDataSetChanged();
 
         AtualizaValorTotal();
+    }
+
+    private void AtualizaValorTotal() {
+
+        double soma = 0.0;
+        for (Produto produto : produtos) {
+            soma += produto.getValor() * produto.getQuantidade();
+        }
+
+        NumberFormat formatadorNumerico = NumberFormat.getCurrencyInstance();
+
+        valorTotal.setText("TOTAL: " + formatadorNumerico.format(soma));
     }
 }

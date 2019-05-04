@@ -4,23 +4,38 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.db.parseList
 import org.jetbrains.anko.db.rowParser
-import org.jetbrains.anko.db.select
 import org.jetbrains.anko.toast
 import java.text.NumberFormat
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
+
+    private var botaoAdicionar: Button? = null
+    private var listViewProdutos: ListView? = null
+    private var produtos: ArrayList<Produto>? = null
+    private var produtoAdapter: ProdutoAdapter? = null
+    private var valorTotal: TextView? = null
+    private var _db: BancoLocal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        listViewProdutos = findViewById(R.id.list_view_produtos)
+        botaoAdicionar = findViewById(R.id.btn_adicionar)
+        valorTotal = findViewById(R.id.txt_total)
 
-        val produtosAdapter = ProdutoAdapter(this)
-        list_view_produtos.adapter = produtosAdapter
+        produtos = ArrayList()
+        produtoAdapter = ProdutoAdapter(this, produtos)
+        listViewProdutos?.adapter = produtoAdapter
+
+        _db = BancoLocal(this)
+        produtos?.addAll(_db!!.getProdutos())
+        produtoAdapter?.notifyDataSetChanged()
+
 
         btn_adicionar.setOnClickListener {
             //Criando a Intent explícita
@@ -30,73 +45,41 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentCadastro)
         }
 
-        list_view_produtos.setOnItemLongClickListener { adapterView: AdapterView<*>, view: View, position: Int, id: Long ->
+        listViewProdutos?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+            val produtoParaRemover = produtos?.get(position)
 
-            var itemParaRemover = produtosAdapter.getItem(position)
-            produtosAdapter.remove(itemParaRemover)
+            _db?.deletaRegistro(produtoParaRemover?.id!!)
+            produtos?.removeAt(position)
+            produtoAdapter?.notifyDataSetChanged()
 
-            //deletando do banco de dados
-            deletarProduto(itemParaRemover.id)
+            AtualizaValorTotal()
 
-            AtualizaValorTotal(produtosAdapter as List<Produto>)
-
-            toast("item deletado com sucesso")
-
-            true // Esse true informa que o click foi realizado.
+            Toast.makeText(this@MainActivity, "Item excluido.", Toast.LENGTH_SHORT).show()
+            true
         }
     }
 
-
-    // TODO: replicar logica da lista de produtos
     override fun onResume() {
         super.onResume()
-
-        val adapter = list_view_produtos.adapter as ProdutoAdapter
-
-        database.use {
-
-            //Efetuando uam consulta no banco de dados
-            select("produtos").exec {
-
-                //Criando o parser que montará o objeto produto
-                val parser = rowParser {
-
-                        id: Int, nome: String,
-                        quantidade: Int,
-                        valor: Double,
-                        foto: ByteArray? ->
-                    //Colunas do banco de dados
-
-
-                    //Montagem do objeto Produto com as colunas do banco
-                    Produto(id, nome, quantidade, valor, foto?.toBitmap())
-                }
-
-                adapter.clear()
-                var listaProdutos = parseList(parser);
-                adapter.addAll(listaProdutos)
-                AtualizaValorTotal(listaProdutos)
-            }
-        }
-
-
+        AtualizarListaDeProdutos()
     }
 
-    fun AtualizaValorTotal(produtos : List<Produto>) {
-        val soma = produtos.sumByDouble { it.valor * it.quantidade }
+    fun AtualizarListaDeProdutos() {
+
+        produtos?.clear()
+        produtos?.addAll(_db?.getProdutos()!!)
+
+        produtoAdapter?.notifyDataSetChanged()
+
+        AtualizaValorTotal()
+    }
+
+    private fun AtualizaValorTotal() {
+
+        val soma = produtos?.sumByDouble { it.valor!! * it.quantidade!! }
 
         val formatadorNumerico = NumberFormat.getCurrencyInstance()
 
-        txt_total.text = "TOTAL: ${formatadorNumerico.format(soma)}"
-    }
-
-    fun deletarProduto(idProduto:Int) {
-
-        database.use {
-
-            var idParaRemover = arrayOf(idProduto.toString())
-//            delete("produtos", "id = {_id}", _id to idProduto)
-        }
-
+        valorTotal?.text = "TOTAL: " + formatadorNumerico.format(soma)
     }
 }

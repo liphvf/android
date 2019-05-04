@@ -63,7 +63,7 @@ public class CadastroActivity extends AppCompatActivity {
                     return;
                 }
 
-                CriaBanco db = new CriaBanco(CadastroActivity.this);
+                BancoLocal db = new BancoLocal(CadastroActivity.this);
                 db.insereDado(produtoNomeText, Integer.parseInt(quantidadeText) , Double.parseDouble(valorText), imageBitMap );
 
                 CadastroActivity.this.finish();

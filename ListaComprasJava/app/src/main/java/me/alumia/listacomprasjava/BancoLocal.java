@@ -12,7 +12,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class CriaBanco extends SQLiteOpenHelper {
+public class BancoLocal extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO = "produtos.db";
     private static final String TABELA = "produtos";
@@ -24,7 +24,7 @@ public class CriaBanco extends SQLiteOpenHelper {
     private static final int VERSAO = 1;
 
 
-    public CriaBanco(Context context) {
+    public BancoLocal(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
     }
 
@@ -45,10 +45,8 @@ public class CriaBanco extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        if (oldVersion != newVersion) {
             db.execSQL("DROP TABLE IF EXISTS " + TABELA);
             onCreate(db);
-//        }
     }
 
     public String insereDado(String nome, int quantidade, double valor, Bitmap foto){
@@ -56,26 +54,26 @@ public class CriaBanco extends SQLiteOpenHelper {
         long resultado;
 
         valores = new ContentValues();
-        valores.put(CriaBanco.NOME, nome);
-        valores.put(CriaBanco.QUANTIDADE, quantidade);
-        valores.put(CriaBanco.VALOR, valor);
+        valores.put(BancoLocal.NOME, nome);
+        valores.put(BancoLocal.QUANTIDADE, quantidade);
+        valores.put(BancoLocal.VALOR, valor);
 
         if (foto != null) {
             ByteArrayOutputStream streamFoto = new ByteArrayOutputStream();
             foto.compress(Bitmap.CompressFormat.PNG, 100, streamFoto);
-            valores.put(CriaBanco.FOTO, streamFoto.toByteArray());
+            valores.put(BancoLocal.FOTO, streamFoto.toByteArray());
         }
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        resultado = db.insert(CriaBanco.TABELA, null, valores);
+        resultado = db.insert(BancoLocal.TABELA, null, valores);
 
         db.close();
 
         if (resultado ==-1)
             return "Erro ao inserir registro";
         else
-            return "Registro Inserido com sucesso";
+            return "Registro inserido com sucesso";
 
     }
 
@@ -126,14 +124,8 @@ public class CriaBanco extends SQLiteOpenHelper {
     }
 
     public void deletaRegistro(int id){
-
-        Log.i("CriaBanco ID",id + "");
-
-        String where = CriaBanco.ID + " = " + id;
+        String where = BancoLocal.ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
-        int x = db.delete(CriaBanco.TABELA,where,null);
-
-        Log.i("CriaBanco",x + "");
 
         db.close();
     }

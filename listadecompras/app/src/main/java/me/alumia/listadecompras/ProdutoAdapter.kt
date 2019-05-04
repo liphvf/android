@@ -8,47 +8,51 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import java.text.NumberFormat
+import java.util.ArrayList
 
-class ProdutoAdapter(contexto: Context) : ArrayAdapter<Produto>(contexto, 0) {
+class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null) : ArrayAdapter<Produto>(contexto, 0) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
 
-        val view: View
+        var _convertView: View? = convertView
+        val viewHolder: ViewHolder
 
-        if (convertView != null) {
-            view = convertView
+        if (produtos != null) {
+
+            // Linkar o xml para classe java
+            if (_convertView == null) {
+                // Inflando a View e adicionando a _convertView.
+                _convertView = LayoutInflater.from(context).inflate(R.layout.list_view_item, parent, false)
+
+                viewHolder = ViewHolder()
+                viewHolder.imgItemFoto = _convertView.findViewById(R.id.img_item_foto)
+                viewHolder.txtItemProduto = _convertView.findViewById(R.id.txt_item_produto)
+                viewHolder.txtQuantidade = _convertView.findViewById(R.id.txt_item_qtd)
+                viewHolder.txtValor = _convertView.findViewById(R.id.txt_item_valor)
+
+                _convertView.tag = viewHolder
+            } else {
+                viewHolder = _convertView.getTag() as ViewHolder
+
+            }
+
+            val formatadorNumerico = NumberFormat.getCurrencyInstance()
+
+            viewHolder.imgItemFoto?.setImageBitmap(produtos?.get(position)?.foto)
+            viewHolder.txtItemProduto?.text = produtos?.get(position)?.nome
+            viewHolder.txtQuantidade?.text = "x " + produtos?.get(position)?.quantidade
+            viewHolder.txtValor?.text = formatadorNumerico.format(produtos?.get(position)?.valor)
         }
-        else{
-            view = LayoutInflater.from(context).inflate(R.layout.list_view_item, parent, false)
-        }
 
-        val txt_produto = view.findViewById<TextView>(R.id.txt_item_produto)
-        val txt_qtd = view.findViewById<TextView>(R.id.txt_item_qtd)
-        val txt_valor = view.findViewById<TextView>(R.id.txt_item_valor)
-        val img_produto = view.findViewById<ImageView>(R.id.img_item_foto)
-
-//        NumberFormat.getCurrencyInstance(Locale("pt", "br")) Caso queira passar uma moeda
-        val formatadorMoeada = NumberFormat.getCurrencyInstance()
-
-        val item = getItem(position)
-
-        txt_qtd.text = item.quantidade.toString()
-        txt_produto.text = item.nome
-        txt_valor.text = formatadorMoeada.format(item.valor)
-
-        if (item.foto != null){
-            img_produto.setImageBitmap(item.foto)
-        }
-
-        return view
+        return _convertView
     }
 
-    // TODO: Replicar ViewHolder
-    private class ViewHolder {
-        var imgItemFoto: ImageView? = null
-        var txtItemProduto: TextView? = null
-        var txtQuantidade: TextView? = null
-        var txtValor: TextView? = null
+    companion object {
+        private class ViewHolder {
+            var imgItemFoto: ImageView? = null
+            var txtItemProduto: TextView? = null
+            var txtQuantidade: TextView? = null
+            var txtValor: TextView? = null
+        }
     }
-
 }

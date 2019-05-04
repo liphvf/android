@@ -46,8 +46,7 @@ public class ProdutoAdapter extends ArrayAdapter<Produto> {
                viewHolder.txtValor = _convertView.findViewById(R.id.txt_item_valor);
 
                _convertView.setTag(viewHolder);
-           }
-           else {
+           } else {
                viewHolder = (ViewHolder) _convertView.getTag();
 
            }

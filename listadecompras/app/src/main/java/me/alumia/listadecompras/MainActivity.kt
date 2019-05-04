@@ -12,25 +12,17 @@ import java.text.NumberFormat
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
-
-    private var botaoAdicionar: Button? = null
-    private var listViewProdutos: ListView? = null
     private var produtos: ArrayList<Produto>? = null
     private var produtoAdapter: ProdutoAdapter? = null
-    private var valorTotal: TextView? = null
     private var _db: BancoLocal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listViewProdutos = findViewById(R.id.list_view_produtos)
-        botaoAdicionar = findViewById(R.id.btn_adicionar)
-        valorTotal = findViewById(R.id.txt_total)
-
         produtos = ArrayList()
-        produtoAdapter = ProdutoAdapter(this, produtos)
-        listViewProdutos?.adapter = produtoAdapter
+        produtoAdapter = ProdutoAdapter(this)
+        list_view_produtos.adapter = produtoAdapter
 
         _db = BancoLocal(this)
         produtos?.addAll(_db!!.getProdutos())
@@ -45,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentCadastro)
         }
 
-        listViewProdutos?.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        list_view_produtos.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
             val produtoParaRemover = produtos?.get(position)
 
             _db?.deletaRegistro(produtoParaRemover?.id!!)
@@ -67,9 +59,12 @@ class MainActivity : AppCompatActivity() {
     fun AtualizarListaDeProdutos() {
 
         produtos?.clear()
+        produtoAdapter?.clear()
         produtos?.addAll(_db?.getProdutos()!!)
 
         produtoAdapter?.notifyDataSetChanged()
+
+        var x = produtoAdapter?.produtos
 
         AtualizaValorTotal()
     }
@@ -80,6 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         val formatadorNumerico = NumberFormat.getCurrencyInstance()
 
-        valorTotal?.text = "TOTAL: " + formatadorNumerico.format(soma)
+        txt_total.text = "TOTAL: " + formatadorNumerico.format(soma)
     }
 }

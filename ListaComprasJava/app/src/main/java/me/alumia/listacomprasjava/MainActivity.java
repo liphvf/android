@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private Button botaoAdicionar;
-    private ListView listView;
+    private ListView listViewProdutos;
     private ArrayList<Produto> produtos;
     private ProdutoAdapter produtoAdapter;
     private TextView valorTotal;
@@ -29,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.list_view_produtos);
+        listViewProdutos = findViewById(R.id.list_view_produtos);
         botaoAdicionar = findViewById(R.id.btn_adicionar);
         valorTotal = findViewById(R.id.txt_total);
 
         produtos = new ArrayList<Produto>();
         produtoAdapter = new ProdutoAdapter(this, produtos);
-        listView.setAdapter(produtoAdapter);
+        listViewProdutos.setAdapter(produtoAdapter);
 
         _db = new CriaBanco(this);
         produtos.addAll(_db.getProdutos());
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listViewProdutos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -68,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     @Override
@@ -95,19 +92,10 @@ public class MainActivity extends AppCompatActivity {
     public void AtualizarListaDeProdutos() {
 
         produtos.clear();
-        Log.i("Main1", produtos.size() + "");
         produtos.addAll(_db.getProdutos());
 
-        Log.i("Main2", produtos.size() + "");
-
         produtoAdapter.notifyDataSetChanged();
-        Log.i("Main4",  produtoAdapter.produtos.size() + "");
-
-
-
-
 
         AtualizaValorTotal();
-
     }
 }

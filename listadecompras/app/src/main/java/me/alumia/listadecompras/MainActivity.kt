@@ -3,6 +3,7 @@ package me.alumia.listadecompras
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,12 +22,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         produtos = ArrayList()
-        produtoAdapter = ProdutoAdapter(this)
+        produtoAdapter = ProdutoAdapter(this, produtos)
+
         list_view_produtos.adapter = produtoAdapter
 
         _db = BancoLocal(this)
         produtos?.addAll(_db!!.getProdutos())
         produtoAdapter?.notifyDataSetChanged()
+
+        Log.i("PosNotify", produtos?.size.toString())
+//        Log.i("PosNotify", produtoAdapter?.produtos?.size.toString())
+
 
 
         btn_adicionar.setOnClickListener {
@@ -54,17 +60,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         AtualizarListaDeProdutos()
+        Log.i("Resume", produtos?.size.toString())
+//        Log.i("Resume", produtoAdapter?.produtos?.size.toString())
     }
 
     fun AtualizarListaDeProdutos() {
 
         produtos?.clear()
-        produtoAdapter?.clear()
+        produtoAdapter?.notifyDataSetChanged()
         produtos?.addAll(_db?.getProdutos()!!)
 
         produtoAdapter?.notifyDataSetChanged()
-
-        var x = produtoAdapter?.produtos
 
         AtualizaValorTotal()
     }

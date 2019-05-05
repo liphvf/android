@@ -36,7 +36,7 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
                 _convertView.tag = viewHolder
             } else {
                 viewHolder = _convertView.tag as ViewHolder
-        }
+            }
 
 
             var produto = getItem(position)
@@ -45,7 +45,7 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
 
             val formatadorNumerico = NumberFormat.getCurrencyInstance()
 
-            with(produto){
+            with(produto) {
                 viewHolder.imgItemFoto?.setImageBitmap(foto)
                 viewHolder.txtItemProduto?.text = nome
                 viewHolder.txtQuantidade?.text = "x $quantidade"
@@ -63,5 +63,13 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
             var txtQuantidade: TextView? = null
             var txtValor: TextView? = null
         }
+    }
+
+    override fun getCount(): Int {
+        return produtos?.size ?: 0
+    }
+
+    override fun getItem(position: Int): Produto {
+        return produtos!!.get(position)
     }
 }

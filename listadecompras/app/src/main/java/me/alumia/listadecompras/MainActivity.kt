@@ -3,12 +3,8 @@ package me.alumia.listadecompras
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.db.rowParser
-import org.jetbrains.anko.toast
 import java.text.NumberFormat
 import java.util.ArrayList
 
@@ -29,11 +25,6 @@ class MainActivity : AppCompatActivity() {
         _db = BancoLocal(this)
         produtos?.addAll(_db!!.getProdutos())
         produtoAdapter?.notifyDataSetChanged()
-
-        Log.i("PosNotify", produtos?.size.toString())
-//        Log.i("PosNotify", produtoAdapter?.produtos?.size.toString())
-
-
 
         btn_adicionar.setOnClickListener {
             //Criando a Intent explícita
@@ -60,8 +51,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         AtualizarListaDeProdutos()
-        Log.i("Resume", produtos?.size.toString())
-//        Log.i("Resume", produtoAdapter?.produtos?.size.toString())
     }
 
     fun AtualizarListaDeProdutos() {

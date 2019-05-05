@@ -2,7 +2,6 @@ package me.alumia.listadecompras
 
 import android.widget.ArrayAdapter
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,6 @@ import java.util.ArrayList
 class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null) : ArrayAdapter<Produto>(contexto, 0) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-
-        Log.i("ProdutoAdater", "chegou na view")
-
         var _convertView: View? = convertView
         val viewHolder: ViewHolder
 
@@ -40,8 +36,6 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
 
 
             var produto = getItem(position)
-
-            Log.i("ProdutoAdater", "chegou aqui")
 
             val formatadorNumerico = NumberFormat.getCurrencyInstance()
 

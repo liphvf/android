@@ -45,10 +45,12 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
 
             val formatadorNumerico = NumberFormat.getCurrencyInstance()
 
-            viewHolder.imgItemFoto?.setImageBitmap(produto.foto)
-            viewHolder.txtItemProduto?.text = produto.nome
-            viewHolder.txtQuantidade?.text = "x " + produto?.quantidade
-            viewHolder.txtValor?.text = formatadorNumerico.format(produto?.valor)
+            with(produto){
+                viewHolder.imgItemFoto?.setImageBitmap(foto)
+                viewHolder.txtItemProduto?.text = nome
+                viewHolder.txtQuantidade?.text = "x $quantidade"
+                viewHolder.txtValor?.text = formatadorNumerico.format(valor)
+            }
         }
 
         return _convertView

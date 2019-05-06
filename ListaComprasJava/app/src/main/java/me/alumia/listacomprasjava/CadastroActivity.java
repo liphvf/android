@@ -49,7 +49,6 @@ public class CadastroActivity extends AppCompatActivity {
                 String quantidadeText = quantidade.getText().toString();
                 String valorText = valor.getText().toString();
 
-
                 if (produtoNomeText.isEmpty()) {
                     produtoNome.setError("Preencha o nome do produto");
                     return;
@@ -67,7 +66,6 @@ public class CadastroActivity extends AppCompatActivity {
                 db.insereDado(produtoNomeText, Integer.parseInt(quantidadeText) , Double.parseDouble(valorText), imageBitMap );
 
                 CadastroActivity.this.finish();
-
             }
         });
 
@@ -82,15 +80,12 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Verifica se a resposta é do código que você precisa e teve o resultado ok
         if (requestCode == COD_IMAGE && resultCode == Activity.RESULT_OK) {
-            // Verifica se veio dados
             if (data != null) {
 
                 imageBitMap = (Bitmap) data.getExtras().get("data");
                 fotoProduto.setImageBitmap(imageBitMap);
             }
         }
-
     }
 }

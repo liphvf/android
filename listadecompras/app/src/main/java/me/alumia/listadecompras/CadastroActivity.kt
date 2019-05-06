@@ -18,9 +18,6 @@ class CadastroActivity : AppCompatActivity() {
     val COD_IMAGE = 101
     var imageBitMap: Bitmap? = null
 
-    private var fotoProduto: ImageView? = null
-    private var botaoInserir: Button? = null
-
     private var produtoNome: TextView? = null
     private var quantidade: TextView? = null
     private var valor: TextView? = null
@@ -34,7 +31,6 @@ class CadastroActivity : AppCompatActivity() {
         }
 
         btn_inserir.setOnClickListener {
-
             this.produtoNome = findViewById(R.id.txt_produto)
             this.quantidade = findViewById(R.id.txt_qtd)
             this.valor = findViewById(R.id.txt_valor)
@@ -42,7 +38,6 @@ class CadastroActivity : AppCompatActivity() {
             var produtoNomeText = produtoNome?.text.toString()
             val quantidadeText = quantidade?.text.toString()
             val valorText = valor?.text.toString()
-
 
             if (produtoNomeText.isEmpty()) {
                 this.produtoNome?.error ="Preencha o nome do produto"
@@ -77,15 +72,11 @@ class CadastroActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Verifica se a resposta é do código que você precisa e teve o resultado ok
         if (requestCode == COD_IMAGE && resultCode == Activity.RESULT_OK) {
-            // Verifica se veio dados
-            if (data != null) {
-
-                imageBitMap = data.extras!!.get("data") as Bitmap
-                fotoProduto?.setImageBitmap(imageBitMap)
+            data?.let {
+                imageBitMap = data.extras.get("data") as Bitmap
+                img_foto_produto.setImageBitmap(imageBitMap)
             }
         }
     }
-
 }

@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         listViewProdutos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Produto produtoParaRemover = produtos.get(position);
 
                 _db.deletaRegistro(produtoParaRemover.getId());

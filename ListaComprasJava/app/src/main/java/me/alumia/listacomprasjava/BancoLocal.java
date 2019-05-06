@@ -39,7 +39,6 @@ public class BancoLocal extends SQLiteOpenHelper {
                 + " ) ";
 
         db.execSQL(sql);
-
     }
 
     @Override

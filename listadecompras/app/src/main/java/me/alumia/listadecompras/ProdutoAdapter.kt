@@ -17,10 +17,7 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
         val viewHolder: ViewHolder
 
         if (produtos != null) {
-
-            // Linkar o xml para classe java
             if (_convertView == null) {
-                // Inflando a View e adicionando a _convertView.
                 _convertView = LayoutInflater.from(context).inflate(R.layout.list_view_item, parent, false)
 
                 viewHolder = ViewHolder()
@@ -46,7 +43,6 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
                 viewHolder.txtValor?.text = formatadorNumerico.format(valor)
             }
         }
-
         return _convertView
     }
 

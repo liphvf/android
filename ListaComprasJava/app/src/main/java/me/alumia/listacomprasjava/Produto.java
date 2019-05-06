@@ -19,7 +19,6 @@ public class Produto {
     public Produto() {
     }
 
-
     private int id;
     private String nome;
     private int quantidade;

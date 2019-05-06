@@ -115,8 +115,8 @@ class BancoLocal(context: Context?) :
     }
 
     fun deletaRegistro(id: Int) {
-        val where = ID + " = " + id
-        val db = this.readableDatabase
+        val db = this.writableDatabase
+        db.delete(TABELA, ID + "=?", arrayOf(id.toString()))
 
         db.close()
     }

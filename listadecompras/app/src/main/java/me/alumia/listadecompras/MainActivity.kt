@@ -3,6 +3,7 @@ package me.alumia.listadecompras
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.NumberFormat
@@ -19,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         produtos = ArrayList()
         produtoAdapter = ProdutoAdapter(this, produtos)
-
         list_view_produtos.adapter = produtoAdapter
 
         _db = BancoLocal(this)
@@ -55,9 +55,15 @@ class MainActivity : AppCompatActivity() {
 
     fun AtualizarListaDeProdutos() {
 
+
+
+        var x = _db?.getProdutos();
+
+        Log.i("Test", x?.size.toString())
+
         produtos?.clear()
         produtoAdapter?.notifyDataSetChanged()
-        produtos?.addAll(_db?.getProdutos()!!)
+        _db?.getProdutos()?.let { produtos?.addAll(it) }
 
         produtoAdapter?.notifyDataSetChanged()
 

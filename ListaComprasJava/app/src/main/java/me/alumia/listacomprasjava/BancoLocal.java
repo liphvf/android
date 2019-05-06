@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BancoLocal extends SQLiteOpenHelper {
@@ -124,8 +126,9 @@ public class BancoLocal extends SQLiteOpenHelper {
     }
 
     public void deletaRegistro(int id){
-        String where = BancoLocal.ID + " = " + id;
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] ids = {Integer.toString(id)};
+        db.delete(TABELA, BancoLocal.ID + "=?", ids);
 
         db.close();
     }

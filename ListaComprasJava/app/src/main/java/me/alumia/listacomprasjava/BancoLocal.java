@@ -7,11 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BancoLocal extends SQLiteOpenHelper {
@@ -39,7 +36,7 @@ public class BancoLocal extends SQLiteOpenHelper {
                 + QUANTIDADE + " INTEGER, "
                 + VALOR + " REAL, "
                 + FOTO + " BLOB "
-                +" ) ";
+                + " ) ";
 
         db.execSQL(sql);
 
@@ -47,15 +44,14 @@ public class BancoLocal extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABELA);
-            onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABELA);
+        onCreate(db);
     }
 
-    public String insereDado(String nome, int quantidade, double valor, Bitmap foto){
-        ContentValues valores;
+    public String insereDado(String nome, int quantidade, double valor, Bitmap foto) {
+        ContentValues valores = new ContentValues();
         long resultado;
 
-        valores = new ContentValues();
         valores.put(BancoLocal.NOME, nome);
         valores.put(BancoLocal.QUANTIDADE, quantidade);
         valores.put(BancoLocal.VALOR, valor);
@@ -72,21 +68,21 @@ public class BancoLocal extends SQLiteOpenHelper {
 
         db.close();
 
-        if (resultado ==-1)
+        if (resultado == -1)
             return "Erro ao inserir registro";
         else
             return "Registro inserido com sucesso";
 
     }
 
-    public Cursor carregaDados(){
+    public Cursor carregaDados() {
 
         Cursor cursor;
-        String[] campos =  {this.ID,this.NOME};
+        String[] campos = {this.ID, this.NOME};
         SQLiteDatabase db = this.getReadableDatabase();
         cursor = db.query(this.TABELA, campos, null, null, null, null, null, null);
 
-        if(cursor!=null){
+        if (cursor != null) {
             cursor.moveToFirst();
         }
         db.close();
@@ -100,7 +96,7 @@ public class BancoLocal extends SQLiteOpenHelper {
         Cursor mCursor = db.query(this.TABELA, null, null, null, null, null, null, null);
 
         if (mCursor.moveToFirst()) {
-            do{
+            do {
                 Produto produto = new Produto();
                 produto.setId(mCursor.getInt(mCursor.getColumnIndexOrThrow("_id")));
                 produto.setNome(mCursor.getString(mCursor.getColumnIndexOrThrow("nome")));
@@ -109,8 +105,8 @@ public class BancoLocal extends SQLiteOpenHelper {
 
                 byte[] fotoBanco = mCursor.getBlob(mCursor.getColumnIndexOrThrow("foto"));
 
-                if (fotoBanco != null && fotoBanco.length > 0){
-                    produto.setFoto(BitmapFactory.decodeByteArray(fotoBanco,0, fotoBanco.length));
+                if (fotoBanco != null && fotoBanco.length > 0) {
+                    produto.setFoto(BitmapFactory.decodeByteArray(fotoBanco, 0, fotoBanco.length));
                 }
 
                 produtos.add(produto);
@@ -125,7 +121,7 @@ public class BancoLocal extends SQLiteOpenHelper {
         return produtos;
     }
 
-    public void deletaRegistro(int id){
+    public void deletaRegistro(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] ids = {Integer.toString(id)};
         db.delete(TABELA, BancoLocal.ID + "=?", ids);

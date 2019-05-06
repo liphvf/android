@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         produtos.addAll(_db.getProdutos());
         produtoAdapter.notifyDataSetChanged();
 
-        // Adiciona ação ao evento de clique.
         botaoAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Adiciona ação ao clicar longamente
         listViewProdutos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,17 +71,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AtualizarListaDeProdutos() {
-
         produtos.clear();
         produtos.addAll(_db.getProdutos());
-
         produtoAdapter.notifyDataSetChanged();
 
         AtualizaValorTotal();
     }
 
     private void AtualizaValorTotal() {
-
         double soma = 0.0;
         for (Produto produto : produtos) {
             soma += produto.getValor() * produto.getQuantidade();

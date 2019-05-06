@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
         produtoAdapter?.notifyDataSetChanged()
 
         btn_adicionar.setOnClickListener {
-            //Criando a Intent explícita
             val intentCadastro = Intent(this, CadastroActivity::class.java)
-
-            //iniciando a atividade.
             startActivity(intentCadastro)
         }
 
@@ -55,14 +52,12 @@ class MainActivity : AppCompatActivity() {
     fun AtualizarListaDeProdutos() {
         produtos?.clear()
         _db?.getProdutos()?.let { produtos?.addAll(it) }
-
         produtoAdapter?.notifyDataSetChanged()
 
         AtualizaValorTotal()
     }
 
     private fun AtualizaValorTotal() {
-
         val soma = produtos?.sumByDouble { it.valor!! * it.quantidade!! }
 
         val formatadorNumerico = NumberFormat.getCurrencyInstance()

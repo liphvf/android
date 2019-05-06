@@ -42,15 +42,14 @@ class BancoLocal(context: Context?) :
     }
 
     fun insereDado(nome: String, quantidade: Int, valor: Double, foto: Bitmap?): String {
-        val valores: ContentValues
+        val valores = ContentValues()
         val resultado: Long
 
-        valores = ContentValues()
         valores.put(NOME, nome)
         valores.put(QUANTIDADE, quantidade)
         valores.put(VALOR, valor)
 
-        if (foto != null) {
+        foto?.let {
             val streamFoto = ByteArrayOutputStream()
             foto.compress(Bitmap.CompressFormat.PNG, 100, streamFoto)
             valores.put(FOTO, streamFoto.toByteArray())
@@ -62,7 +61,7 @@ class BancoLocal(context: Context?) :
 
         db.close()
 
-        return if ( resultado.toInt()  == -1) {
+        return if (resultado.toInt() == -1) {
             "Erro ao inserir registro."
         } else {
             "Registro inserido com sucesso."
@@ -88,17 +87,17 @@ class BancoLocal(context: Context?) :
         val db = this.readableDatabase
         val mCursor = db.query(TABELA, null, null, null, null, null, null, null)
 
-        if (mCursor!!.moveToFirst()) {
+        if (mCursor.moveToFirst()) {
             do {
                 var produto = Produto();
-                produto.id =mCursor.getInt(mCursor.getColumnIndexOrThrow("_id"))
-                produto.nome =  mCursor.getString(mCursor.getColumnIndexOrThrow("nome"))
+                produto.id = mCursor.getInt(mCursor.getColumnIndexOrThrow("_id"))
+                produto.nome = mCursor.getString(mCursor.getColumnIndexOrThrow("nome"))
                 produto.quantidade = mCursor.getInt(mCursor.getColumnIndexOrThrow("quantidade"))
                 produto.valor = mCursor.getDouble(mCursor.getColumnIndexOrThrow("valor"))
 
                 val fotoBanco = mCursor.getBlob(mCursor.getColumnIndexOrThrow("foto"))
 
-                if (fotoBanco != null && fotoBanco.size > 0) {
+                if (fotoBanco != null && fotoBanco.isNotEmpty()) {
                     produto.foto = BitmapFactory.decodeByteArray(fotoBanco, 0, fotoBanco.size)
                 }
 

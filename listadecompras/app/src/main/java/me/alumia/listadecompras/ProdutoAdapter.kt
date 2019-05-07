@@ -31,7 +31,6 @@ class ProdutoAdapter(contexto: Context, var produtos: ArrayList<Produto>? = null
                 viewHolder = _convertView.tag as ViewHolder
             }
 
-
             var produto = getItem(position)
 
             val formatadorNumerico = NumberFormat.getCurrencyInstance()

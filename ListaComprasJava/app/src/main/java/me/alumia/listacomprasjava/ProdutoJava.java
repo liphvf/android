@@ -2,9 +2,9 @@ package me.alumia.listacomprasjava;
 
 import android.graphics.Bitmap;
 
-public class Produto {
+public class ProdutoJava {
 
-    public Produto(int id, String nome, int quantidade, double valor, Bitmap foto) {
+    public ProdutoJava(int id, String nome, int quantidade, double valor, Bitmap foto) {
         this.id = id;
         this.nome = nome;
         this.quantidade = quantidade;
@@ -12,11 +12,11 @@ public class Produto {
         this.foto = foto;
     }
 
-    public Produto(int id, String nome, int quantidade, double valor) {
+    public ProdutoJava(int id, String nome, int quantidade, double valor) {
       this(id, nome, quantidade, valor, null);
     }
 
-    public Produto() {
+    public ProdutoJava() {
     }
 
     private int id;
